@@ -1,32 +1,16 @@
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../dist/server');
-let should = chai.should();
-let expect = chai.expect;
-
+import { server } from '../src/server';
+import * as chai from 'chai';
+import chaiHttp = require('chai-http');
+import 'mocha';
 
 chai.use(chaiHttp);
-//Our parent block
-describe('Books', () => {
-  /*
-  * Test the / route
-  */
-  describe('/ ', () => {
-      it('it should GET intro message', (done) => {
-        chai.request(server)
-            .get('/')
-            .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  expect(res.body.message).to.equal('Welcome to our Bookstore!');
-              done();
-            });
-      });
-  });
+const expect = chai.expect;
 
-  after( function(done) {
-    server.close();
-    done();
-  });
-
-});
+describe('Hello API Request', () => {
+  it('should return response on call', () => {
+    return chai.request(server).get('/hello')
+      .then(res => {
+        chai.expect(res.text).to.eql("how's it going?");
+      })
+  })
+})
